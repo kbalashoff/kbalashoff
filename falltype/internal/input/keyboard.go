@@ -91,7 +91,7 @@ func restore(fd int, orig *syscall.Termios) error {
 
 func getTermios(fd int) (*syscall.Termios, error) {
 	termios := &syscall.Termios{}
-	_, _, errno := syscall.Syscall6(syscall.SYS_IOCTL, uintptr(fd), uintptr(syscall.TCGETS), uintptr(unsafe.Pointer(termios)), 0, 0, 0)
+	_, _, errno := syscall.Syscall6(syscall.SYS_IOCTL, uintptr(fd), ioctlReadTermios, uintptr(unsafe.Pointer(termios)), 0, 0, 0)
 	if errno != 0 {
 		return nil, errno
 	}
@@ -99,7 +99,7 @@ func getTermios(fd int) (*syscall.Termios, error) {
 }
 
 func setTermios(fd int, termios *syscall.Termios) error {
-	_, _, errno := syscall.Syscall6(syscall.SYS_IOCTL, uintptr(fd), uintptr(syscall.TCSETS), uintptr(unsafe.Pointer(termios)), 0, 0, 0)
+	_, _, errno := syscall.Syscall6(syscall.SYS_IOCTL, uintptr(fd), ioctlWriteTermios, uintptr(unsafe.Pointer(termios)), 0, 0, 0)
 	if errno != 0 {
 		return errno
 	}
